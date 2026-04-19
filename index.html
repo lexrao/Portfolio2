@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Portfolio</title>
+<title>Ellexerye S. Cloribel — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -216,6 +216,144 @@ footer { border-top: 1px solid var(--border); padding: 3rem 3.5rem; display: fle
   footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem 1.5rem; }
   .vertical-text, .corner-deco { display: none; }
 }
+
+/* ===== PROFILE BUTTON ===== */
+.profile-btn {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  cursor: none;
+  transition: border-color .3s, background .3s;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.profile-btn:hover { border-color: rgba(200,169,110,0.5); background: rgba(200,169,110,0.06); color: var(--accent); }
+
+/* ===== PROFILE OVERLAY ===== */
+#profile-overlay {
+  position: fixed; inset: 0;
+  z-index: 1000;
+  display: flex;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+#profile-overlay.open { opacity: 1; pointer-events: all; }
+.overlay-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(5,5,5,0.85);
+  backdrop-filter: blur(6px);
+}
+.profile-panel {
+  position: relative;
+  margin-left: auto;
+  width: min(680px, 100vw);
+  height: 100%;
+  background: #0e0e0e;
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  transform: translateX(60px);
+  transition: transform .45s cubic-bezier(0.22,1,0.36,1);
+  display: flex; flex-direction: column;
+}
+#profile-overlay.open .profile-panel { transform: translateX(0); }
+.panel-close {
+  position: sticky; top: 0; right: 0;
+  display: flex; justify-content: flex-end;
+  padding: 1.5rem 2rem;
+  background: #0e0e0e;
+  border-bottom: 1px solid var(--border);
+  z-index: 2;
+}
+.close-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: none;
+  transition: border-color .3s, color .3s;
+  font-size: 16px; line-height: 1;
+}
+.close-btn:hover { border-color: rgba(200,169,110,0.4); color: var(--accent); }
+
+.panel-body { padding: 2.5rem 2.5rem 4rem; }
+
+/* Profile hero */
+.panel-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  border: 1px solid rgba(200,169,110,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 1.8rem; font-style: italic;
+  color: var(--accent); background: rgba(200,169,110,0.05);
+  margin-bottom: 1.2rem;
+}
+.panel-name { font-family: var(--font-display); font-size: 2rem; font-weight: 300; line-height: 1.1; margin-bottom: .3rem; }
+.panel-name em { font-style: italic; color: var(--accent); }
+.panel-role { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; }
+.panel-contacts { display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+.panel-contact { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-dim); text-decoration: none; transition: color .3s; }
+.panel-contact:hover { color: var(--accent); }
+.panel-contact svg { opacity: .5; flex-shrink: 0; }
+
+/* Panel sections */
+.panel-section { margin-bottom: 2.5rem; }
+.panel-section-title {
+  font-size: 9px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 1.2rem;
+  padding-bottom: .5rem; border-bottom: 1px solid var(--border);
+}
+.panel-summary { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+
+/* Skills grid */
+.skills-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-tag {
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  padding: 4px 10px; border: 1px solid var(--border);
+  color: var(--text-dim); transition: border-color .3s, color .3s;
+}
+.skill-tag:hover { border-color: rgba(200,169,110,0.3); color: var(--accent); }
+.skill-tag.highlight { border-color: rgba(200,169,110,0.25); color: rgba(200,169,110,0.8); }
+
+/* Education */
+.edu-item { padding: 1rem 0; border-bottom: 1px solid var(--border); }
+.edu-item:last-child { border-bottom: none; }
+.edu-degree { font-family: var(--font-display); font-size: 1.1rem; font-weight: 300; margin-bottom: .2rem; }
+.edu-school { font-size: 11px; color: var(--text-dim); }
+.edu-year { font-size: 10px; color: var(--text-muted); letter-spacing: .1em; margin-top: .2rem; }
+
+/* Certificates */
+.cert-item {
+  border: 1px solid var(--border);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: .8rem;
+  display: flex; align-items: center; gap: 1.2rem;
+  transition: border-color .3s, background .3s;
+  text-decoration: none; color: inherit;
+  cursor: none;
+}
+.cert-item:hover { border-color: rgba(200,169,110,0.3); background: rgba(200,169,110,0.03); }
+.cert-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(200,169,110,0.2);
+  color: var(--accent); font-size: 12px;
+}
+.cert-info { flex: 1; }
+.cert-name { font-family: var(--font-display); font-size: 1rem; font-weight: 300; margin-bottom: .15rem; }
+.cert-issuer { font-size: 10px; color: var(--text-muted); letter-spacing: .1em; }
+.cert-date { font-size: 10px; color: var(--text-muted); white-space: nowrap; }
+.cert-verify {
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--accent); opacity: .7; display: flex; align-items: center; gap: 4px;
+}
+
+@media (max-width: 600px) {
+  .profile-panel { width: 100vw; border-left: none; }
+  .panel-body { padding: 1.5rem 1.5rem 3rem; }
+}
 </style>
 </head>
 <body>
@@ -226,15 +364,23 @@ footer { border-top: 1px solid var(--border); padding: 3rem 3.5rem; display: fle
 <div class="corner-deco" id="clock-display">00:00:00</div>
 
 <nav>
-  <a href="https://website2-tau-jade.vercel.app/" class="nav-logo" target="_blank">My <em>Portfolio</em></a>
+  <a href="https://website2-tau-jade.vercel.app/" class="nav-logo" target="_blank"><em>Lex</em> Cloribel</a>
   <ul class="nav-links">
     <li><a href="#projects">Work</a></li>
     <li><a href="#mobile">Mobile</a></li>
     <li><a href="https://website2-tau-jade.vercel.app/" target="_blank">Home</a></li>
   </ul>
-  <div class="nav-status">
-    <div class="status-dot"></div>
-    Available for work
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <div class="nav-status">
+      <div class="status-dot"></div>
+      Available for work
+    </div>
+    <button class="profile-btn" onclick="openProfile()" title="About Me" aria-label="Open profile">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1"/>
+        <path d="M2.5 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
 </nav>
 
@@ -243,13 +389,13 @@ footer { border-top: 1px solid var(--border); padding: 3rem 3.5rem; display: fle
   <div class="hero-lines" id="heroLines"></div>
   <div class="hero-index">001 — Introduction</div>
   <h1 class="hero-title">
-    Creative<br>
-    <em>Developer.</em>
+    Ellexerye<br>
+    <em>Cloribel.</em>
   </h1>
   <div class="hero-bottom">
     <p class="hero-desc">
-      Building real-world web applications — from civic portals and hotel systems
-      to interactive games and algorithm visualizers. All deployed and live.
+      CS Graduate building real-world applications — civic portals, hotel systems,
+      Android apps, and interactive tools. All deployed and live.
     </p>
     <div class="hero-scroll">
       <div class="scroll-line"></div>
@@ -467,7 +613,7 @@ footer { border-top: 1px solid var(--border); padding: 3rem 3.5rem; display: fle
 </div>
 
 <footer>
-  <div class="footer-left">My <em>Portfolio</em> — Developer</div>
+  <div class="footer-left"><em>Lex</em> Cloribel — Developer</div>
   <div class="footer-links">
     <a href="https://website2-tau-jade.vercel.app/" target="_blank">Home</a>
     <a href="https://citiconnect2-0.vercel.app/" target="_blank">CitiConnect</a>
@@ -478,16 +624,159 @@ footer { border-top: 1px solid var(--border); padding: 3rem 3.5rem; display: fle
   <div class="footer-copy">© 2025</div>
 </footer>
 
+<!-- ===== PROFILE OVERLAY ===== -->
+<div id="profile-overlay" role="dialog" aria-modal="true" aria-label="About Ellexerye">
+  <div class="overlay-backdrop" onclick="closeProfile()"></div>
+  <div class="profile-panel">
+
+    <div class="panel-close">
+      <button class="close-btn" onclick="closeProfile()" aria-label="Close">✕</button>
+    </div>
+
+    <div class="panel-body">
+
+      <!-- Identity -->
+      <div class="panel-avatar">E</div>
+      <div class="panel-name">Ellexerye <em>S. Cloribel</em></div>
+      <div class="panel-role">Computer Science Graduate &nbsp;·&nbsp; Full-Stack Developer</div>
+
+      <div class="panel-contacts">
+        <a href="mailto:lexCloribel@gmail.com" class="panel-contact">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="2.5" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M1 3.5l5 3.5 5-3.5" stroke="currentColor" stroke-width="1"/></svg>
+          lexCloribel@gmail.com
+        </a>
+        <a href="tel:09500473318" class="panel-contact">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2h3l1 3-1.5 1a7 7 0 003.5 3.5L9.5 8l3 1v3a1 1 0 01-1 1C4.5 13 .5 8.5.5 3a1 1 0 011-1z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
+          09500473318
+        </a>
+        <span class="panel-contact">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1"/><path d="M6 3v3l2 1" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+          Tagbilaran City, Bohol
+        </span>
+        <a href="https://github.com/lexrao" target="_blank" class="panel-contact">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 .5a5.5 5.5 0 00-1.74 10.72c.28.05.38-.12.38-.26v-.9C3.03 10.36 2.7 9.2 2.7 9.2c-.25-.64-.61-.81-.61-.81-.5-.34.04-.33.04-.33.55.04.84.57.84.57.49.84 1.28.6 1.6.46.05-.36.19-.6.35-.74C3.5 8.2 2.3 7.76 2.3 5.8a2.1 2.1 0 01.56-1.46c-.06-.14-.24-.7.05-1.45 0 0 .46-.15 1.5.56A5.2 5.2 0 016 3.2c.46 0 .93.06 1.37.18 1.04-.71 1.5-.56 1.5-.56.29.75.11 1.31.05 1.45.35.38.56.86.56 1.46 0 2-.92 2.4-1.62 2.52.13.11.24.33.24.67v1c0 .14.1.31.38.26A5.5 5.5 0 006 .5z" fill="currentColor"/></svg>
+          github.com/lexrao
+        </a>
+      </div>
+
+      <!-- Summary -->
+      <div class="panel-section">
+        <div class="panel-section-title">Professional Summary</div>
+        <p class="panel-summary">Results-oriented Computer Science Graduate with a strong foundation in software development life cycles, specialized in C#, Python, and Web Technologies. Proven ability to develop functional applications, including real-time image detection systems. Committed to writing clean, scalable code and contributing to innovative software solutions in a fast-paced environment.</p>
+      </div>
+
+      <!-- Skills -->
+      <div class="panel-section">
+        <div class="panel-section-title">Technical Skills</div>
+        <div class="skills-grid">
+          <span class="skill-tag highlight">Python</span>
+          <span class="skill-tag highlight">C#</span>
+          <span class="skill-tag highlight">JavaScript (ES6+)</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">PHP</span>
+          <span class="skill-tag highlight">HTML5</span>
+          <span class="skill-tag highlight">CSS3</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">SQLite</span>
+          <span class="skill-tag">Git / GitHub</span>
+          <span class="skill-tag">Visual Studio</span>
+          <span class="skill-tag">OpenCV</span>
+          <span class="skill-tag">MS Office</span>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="panel-section">
+        <div class="panel-section-title">Education</div>
+        <div class="edu-item">
+          <div class="edu-degree">Bachelor of Science in Computer Science</div>
+          <div class="edu-school">University of Bohol, Tagbilaran City, Bohol</div>
+          <div class="edu-year">Expected Graduation: 2027</div>
+        </div>
+      </div>
+
+      <!-- Certificates -->
+      <div class="panel-section">
+        <div class="panel-section-title">Certificates</div>
+
+        <a href="https://coursera.org/verify/04MSOGI4NBG0" target="_blank" class="cert-item">
+          <div class="cert-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="3" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1"/>
+              <path d="M6 15h6M9 13v2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+              <path d="M5 7l2 2 4-4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="cert-info">
+            <div class="cert-name">Crash Course on Python</div>
+            <div class="cert-issuer">Google · via Coursera</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;">
+            <div class="cert-date">Mar 29, 2026</div>
+            <div class="cert-verify">Verify ↗</div>
+          </div>
+        </a>
+
+        <a href="https://coursera.org/verify/9EVSZZNKX6WH" target="_blank" class="cert-item">
+          <div class="cert-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="3" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1"/>
+              <path d="M6 15h6M9 13v2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+              <circle cx="9" cy="8" r="2.5" stroke="currentColor" stroke-width="1"/>
+              <path d="M6.5 8h1M11.5 8h-1M9 5.5v1M9 10.5v-1" stroke="currentColor" stroke-width=".8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="cert-info">
+            <div class="cert-name">AI Fundamentals</div>
+            <div class="cert-issuer">Google · via Coursera</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;">
+            <div class="cert-date">Mar 29, 2026</div>
+            <div class="cert-verify">Verify ↗</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Key Projects note -->
+      <div class="panel-section">
+        <div class="panel-section-title">Notable Builds</div>
+        <div style="display:flex;flex-direction:column;gap:.8rem;">
+          <div style="padding:.8rem 1rem;border:1px solid var(--border);">
+            <div style="font-family:var(--font-display);font-size:1rem;font-weight:300;margin-bottom:.2rem;">Image Detection System</div>
+            <div style="font-size:11px;color:var(--text-dim);">Real-time face & object detection using C# and OpenCV. Processes live webcam stream with high accuracy and optimized speed.</div>
+          </div>
+          <div style="padding:.8rem 1rem;border:1px solid var(--border);">
+            <div style="font-family:var(--font-display);font-size:1rem;font-weight:300;margin-bottom:.2rem;">Personal Portfolio Website</div>
+            <div style="font-size:11px;color:var(--text-dim);">Designed and deployed a responsive portfolio using HTML, CSS, and JavaScript to showcase academic projects and programming achievements.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel-body -->
+  </div><!-- /profile-panel -->
+</div><!-- /profile-overlay -->
+
 <script>
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
 (function ani(){ cursor.style.left=mx+'px'; cursor.style.top=my+'px'; rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(ani); })();
-document.querySelectorAll('a,.project-item').forEach(el=>{
+document.querySelectorAll('a,.project-item,.profile-btn,.close-btn,.cert-item').forEach(el=>{
   el.addEventListener('mouseenter',()=>{ cursor.style.width='14px'; cursor.style.height='14px'; ring.style.width='50px'; ring.style.height='50px'; ring.style.borderColor='rgba(200,169,110,0.7)'; });
   el.addEventListener('mouseleave',()=>{ cursor.style.width='8px'; cursor.style.height='8px'; ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(200,169,110,0.4)'; });
 });
+
+function openProfile(){
+  document.getElementById('profile-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeProfile(){
+  document.getElementById('profile-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeProfile(); });
 
 const lc = document.getElementById('heroLines');
 [{left:'20%',top:0,width:'1px',height:'100%',delay:0.5},{left:'55%',top:0,width:'1px',height:'60%',delay:0.8},{top:'35%',left:0,width:'100%',height:'1px',delay:0.6},{top:'70%',left:'20%',width:'80%',height:'1px',delay:0.9}].forEach(d=>{
