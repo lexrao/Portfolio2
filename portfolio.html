@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --text: #e8e2d9;
+  --text-muted: rgba(232,226,217,0.35);
+  --text-dim: rgba(232,226,217,0.55);
+  --accent: #c8a96e;
+  --accent2: #7c9e8a;
+  --border: rgba(232,226,217,0.07);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.7;
+  cursor: none;
+  overflow-x: hidden;
+}
+#cursor {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .3s, height .3s;
+  mix-blend-mode: difference;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(200,169,110,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width .3s, height .3s, border-color .3s;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9997; opacity: 0.3;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);
+  pointer-events: none; z-index: 9996;
+}
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 2rem 3.5rem;
+}
+nav::after {
+  content: ''; position: absolute; bottom: 0; left: 3.5rem; right: 3.5rem;
+  height: 1px; background: var(--border);
+}
+.nav-logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 300; letter-spacing: .05em; color: var(--text); text-decoration: none; }
+.nav-logo em { font-style: italic; color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; transition: color .3s; position: relative; }
+.nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width .3s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-links a:hover::after { width: 100%; }
+.nav-status { display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: .15em; color: var(--text-muted); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: statusPulse 2s ease infinite; }
+@keyframes statusPulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(124,158,138,0.4);}50%{opacity:.7;box-shadow:0 0 0 5px rgba(124,158,138,0);} }
+
+#hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 0 3.5rem 5rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 80% 30%,rgba(200,169,110,0.04) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 40% at 10% 70%,rgba(124,158,138,0.04) 0%,transparent 60%);
+}
+.hero-lines { position: absolute; inset: 0; overflow: hidden; }
+.hero-line { position: absolute; background: var(--border); animation: lineFade 3s ease forwards; opacity: 0; }
+@keyframes lineFade { to { opacity: 1; } }
+.hero-index { font-size: 10px; letter-spacing: .3em; color: var(--text-muted); margin-bottom: 2rem; opacity: 0; animation: slideUp .8s ease .3s forwards; }
+.hero-title { font-family: var(--font-display); font-size: clamp(4rem,10vw,9rem); font-weight: 300; line-height: .95; letter-spacing: -.02em; margin-bottom: 2.5rem; opacity: 0; animation: slideUp 1s ease .5s forwards; }
+.hero-title em { font-style: italic; color: var(--accent); display: block; }
+.hero-bottom { display: flex; justify-content: space-between; align-items: flex-end; opacity: 0; animation: slideUp .8s ease .9s forwards; }
+.hero-desc { max-width: 320px; color: var(--text-dim); line-height: 1.8; font-size: 12px; }
+.hero-scroll { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
+.scroll-line { width: 40px; height: 1px; background: var(--text-muted); animation: scrollPulse 2s ease infinite; }
+@keyframes scrollPulse { 0%,100%{width:40px;opacity:.3;}50%{width:60px;opacity:.7;} }
+@keyframes slideUp { from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;} }
+
+.marquee-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.2rem 0; overflow: hidden; }
+.marquee-track { display: flex; width: max-content; animation: marquee 25s linear infinite; }
+.marquee-item { white-space: nowrap; padding: 0 2rem; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--text-muted); }
+.marquee-item span { margin: 0 1rem; color: var(--accent); }
+@keyframes marquee { from{transform:translateX(0);}to{transform:translateX(-50%);} }
+
+#projects { padding: 8rem 3.5rem; }
+.section-header { display: flex; align-items: baseline; gap: 2rem; margin-bottom: 5rem; }
+.section-label { font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: var(--text-muted); padding-top: 4px; }
+.section-title { font-family: var(--font-display); font-size: clamp(2rem,5vw,4rem); font-weight: 300; line-height: 1; }
+
+.project-item {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0;
+  display: grid;
+  grid-template-columns: 60px 1fr 180px;
+  gap: 2rem;
+  align-items: start;
+  cursor: none;
+  position: relative;
+  transition: background .4s;
+  overflow: hidden;
+}
+.project-item::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg,transparent,rgba(200,169,110,0.03),transparent);
+  transform: translateX(-100%); transition: transform .6s ease;
+}
+.project-item:hover::before { transform: translateX(100%); }
+.project-item:hover { background: rgba(200,169,110,0.02); }
+.project-item:last-child { border-bottom: 1px solid var(--border); }
+.project-num { font-size: 10px; letter-spacing: .2em; color: var(--text-muted); padding-top: 6px; }
+.project-name { font-family: var(--font-display); font-size: clamp(1.5rem,3vw,2.4rem); font-weight: 300; line-height: 1.1; margin-bottom: .8rem; transition: color .3s; }
+.project-item:hover .project-name { color: var(--accent); }
+.project-desc { color: var(--text-dim); font-size: 12px; max-width: 480px; line-height: 1.7; margin-bottom: 1.2rem; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); color: var(--text-muted); transition: border-color .3s, color .3s; }
+.project-item:hover .tag { border-color: rgba(200,169,110,0.2); color: var(--text-dim); }
+.tag.featured { border-color: rgba(200,169,110,0.3); color: var(--accent); }
+.project-meta { text-align: right; display: flex; flex-direction: column; gap: 1rem; align-items: flex-end; }
+.project-year { font-size: 10px; letter-spacing: .15em; color: var(--text-muted); }
+.project-link { display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color .3s, gap .3s; }
+.project-link:hover { color: var(--accent); gap: 12px; }
+.project-link .arrow { font-size: 14px; transition: transform .3s; }
+.project-link:hover .arrow { transform: translate(3px,-3px); }
+
+.stats-section { padding: 5rem 3.5rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(3,1fr); }
+.stat-item { padding: 3rem; border-right: 1px solid var(--border); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: var(--font-display); font-size: 4.5rem; font-weight: 300; line-height: 1; display: block; }
+.stat-num em { font-style: italic; color: var(--accent); }
+.stat-label { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin-top: .5rem; display: block; }
+
+footer { border-top: 1px solid var(--border); padding: 3rem 3.5rem; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-family: var(--font-display); font-size: 1rem; font-weight: 300; }
+.footer-left em { font-style: italic; color: var(--accent); }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color .3s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-copy { font-size: 10px; letter-spacing: .1em; color: var(--text-muted); }
+
+.vertical-text { position: fixed; left: 1.5rem; top: 50%; transform: translateY(-50%) rotate(-90deg); font-size: 9px; letter-spacing: .3em; text-transform: uppercase; color: var(--text-muted); opacity: .4; white-space: nowrap; pointer-events: none; }
+.corner-deco { position: fixed; right: 2rem; bottom: 2rem; font-size: 9px; letter-spacing: .2em; color: var(--text-muted); opacity: .4; }
+
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+.mobile-card {
+  background: var(--bg);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: background .3s;
+}
+.mobile-card:hover { background: rgba(200,169,110,0.02); }
+.mobile-icon {
+  width: 52px; height: 52px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  transition: border-color .3s, color .3s;
+}
+.mobile-card:hover .mobile-icon { border-color: rgba(200,169,110,0.3); color: var(--accent); }
+.mobile-platform { font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .6rem; }
+.mobile-name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 300; line-height: 1.1; margin-bottom: .8rem; transition: color .3s; }
+.mobile-card:hover .mobile-name { color: var(--accent); }
+.mobile-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; margin-bottom: 1.2rem; flex: 1; }
+.apk-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none;
+  border: 1px solid rgba(200,169,110,0.3);
+  padding: 8px 16px;
+  transition: background .3s, color .3s, gap .3s;
+  align-self: flex-start;
+}
+.apk-btn:hover { background: rgba(200,169,110,0.08); gap: 12px; }
+
+@media (max-width: 768px) {
+  #mobile { padding-left: 1.5rem; padding-right: 1.5rem; }
+  #mobile > div[style] { grid-template-columns: 1fr !important; }
+  .mobile-card { padding: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 1.5rem; }
+  nav::after { left: 1.5rem; right: 1.5rem; }
+  .nav-links, .nav-status { display: none; }
+  #hero, #projects { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .project-item { grid-template-columns: 40px 1fr; }
+  .project-meta { display: none; }
+  .stats-section { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem 1.5rem; }
+  .vertical-text, .corner-deco { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="vertical-text">Available for work — 2025</div>
+<div class="corner-deco" id="clock-display">00:00:00</div>
+
+<nav>
+  <a href="https://website2-tau-jade.vercel.app/" class="nav-logo" target="_blank">My <em>Portfolio</em></a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#mobile">Mobile</a></li>
+    <li><a href="https://website2-tau-jade.vercel.app/" target="_blank">Home</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    Available for work
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines" id="heroLines"></div>
+  <div class="hero-index">001 — Introduction</div>
+  <h1 class="hero-title">
+    Creative<br>
+    <em>Developer.</em>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      Building real-world web applications — from civic portals and hotel systems
+      to interactive games and algorithm visualizers. All deployed and live.
+    </p>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll to explore
+    </div>
+  </div>
+</section>
+
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-label">002 — Selected Work</span>
+    <h2 class="section-title">Projects</h2>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-item reveal">
+      <div class="project-num">01</div>
+      <div class="project-body">
+        <h3 class="project-name">CitiConnect Portal</h3>
+        <p class="project-desc">Barangay Danao's civic digital platform — connecting residents to local government services, announcements, and community information in one unified portal.</p>
+        <div class="project-tags">
+          <span class="tag featured">Civic Tech</span>
+          <span class="tag">Web App</span>
+          <span class="tag">Portal</span>
+          <span class="tag">Community</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <a href="https://citiconnect2-0.vercel.app/" target="_blank" class="project-link">View live <span class="arrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="project-item reveal" style="transition-delay:.1s">
+      <div class="project-num">02</div>
+      <div class="project-body">
+        <h3 class="project-name">Gentry Royale Hotel POS</h3>
+        <p class="project-desc">Full-featured point-of-sale system for a hotel — room management, billing, order processing, and transaction history in a polished hospitality interface.</p>
+        <div class="project-tags">
+          <span class="tag featured">POS System</span>
+          <span class="tag">Hospitality</span>
+          <span class="tag">Dashboard</span>
+          <span class="tag">Billing</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <a href="https://gentry-royale-hotel-pos.vercel.app/" target="_blank" class="project-link">View live <span class="arrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="project-item reveal" style="transition-delay:.2s">
+      <div class="project-num">03</div>
+      <div class="project-body">
+        <h3 class="project-name">Sari-Sari Store</h3>
+        <p class="project-desc">Digital storefront and inventory management system for a neighborhood store — product listings, stock tracking, and a clean checkout experience.</p>
+        <div class="project-tags">
+          <span class="tag featured">E-Commerce</span>
+          <span class="tag">Inventory</span>
+          <span class="tag">Retail</span>
+          <span class="tag">Web App</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <a href="https://market-ecru-rho.vercel.app/" target="_blank" class="project-link">View live <span class="arrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="project-item reveal" style="transition-delay:.3s">
+      <div class="project-num">04</div>
+      <div class="project-body">
+        <h3 class="project-name">Sorting Algorithms</h3>
+        <p class="project-desc">Interactive visualizer for classic sorting algorithms — watch bubble sort, merge sort, quicksort and more animate step-by-step in real time.</p>
+        <div class="project-tags">
+          <span class="tag featured">Visualizer</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Algorithms</span>
+          <span class="tag">Animation</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <a href="https://sorting-algorithm-tau.vercel.app/" target="_blank" class="project-link">View live <span class="arrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="project-item reveal" style="transition-delay:.4s">
+      <div class="project-num">05</div>
+      <div class="project-body">
+        <h3 class="project-name">Jumping Ball Game</h3>
+        <p class="project-desc">A browser-based arcade game built from scratch. Jump, dodge, and survive — featuring physics simulation, collision detection, and escalating difficulty.</p>
+        <div class="project-tags">
+          <span class="tag featured">Game</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Canvas API</span>
+          <span class="tag">Physics</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <a href="https://game-jump-ball-bice.vercel.app/" target="_blank" class="project-link">Play now <span class="arrow">↗</span></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MOBILE APPS SECTION -->
+<section id="mobile" style="padding: 0 3.5rem 8rem;">
+  <div class="section-header reveal">
+    <span class="section-label">003 — Android Apps</span>
+    <h2 class="section-title">Mobile</h2>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);" class="reveal">
+
+    <!-- App 1 -->
+    <div class="mobile-card">
+      <div class="mobile-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="2" width="16" height="24" rx="3" stroke="currentColor" stroke-width="1" fill="none"/>
+          <circle cx="14" cy="21" r="1.5" fill="currentColor" opacity=".5"/>
+          <path d="M10 8h8M10 11h6M10 14h5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+          <path d="M17 6.5l2.5 2.5-2.5 2.5" stroke="#7c9e8a" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="mobile-platform">Android APK</div>
+      <h3 class="mobile-name">Barangay Health Monitor</h3>
+      <p class="mobile-desc">Community health tracking app for barangay residents — monitor health records, schedule check-ups, and access healthcare services directly from your phone.</p>
+      <div class="project-tags" style="margin-bottom:1.5rem;">
+        <span class="tag featured">Health Tech</span>
+        <span class="tag">Android</span>
+        <span class="tag">Community</span>
+        <span class="tag">Monitoring</span>
+      </div>
+      <a href="https://drive.google.com/file/d/1-Ogbp03OpZl2ehRwTIh-etvqpSRvH_qj/view?usp=drive_link" target="_blank" class="apk-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download APK
+      </a>
+    </div>
+
+    <!-- App 2 -->
+    <div class="mobile-card">
+      <div class="mobile-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="2" width="16" height="24" rx="3" stroke="currentColor" stroke-width="1" fill="none"/>
+          <circle cx="14" cy="21" r="1.5" fill="currentColor" opacity=".5"/>
+          <rect x="9" y="7" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1" fill="none" opacity=".6"/>
+          <path d="M9 16h6M9 18.5h4" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+          <path d="M17 14.5l2 2-2 2" stroke="#c8a96e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="mobile-platform">Android APK</div>
+      <h3 class="mobile-name">Gentry Royale Hotel POS</h3>
+      <p class="mobile-desc">Mobile point-of-sale for Gentry Royale Hotel — manage room orders, process billing, and track transactions on the go from any Android device.</p>
+      <div class="project-tags" style="margin-bottom:1.5rem;">
+        <span class="tag featured">POS System</span>
+        <span class="tag">Android</span>
+        <span class="tag">Hospitality</span>
+        <span class="tag">Billing</span>
+      </div>
+      <a href="https://drive.google.com/file/d/1nwzFMe77Kt4Yv_JGM7d0R94v7c3VgFFP/view?usp=sharing" target="_blank" class="apk-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download APK
+      </a>
+    </div>
+
+    <!-- App 3 -->
+    <div class="mobile-card">
+      <div class="mobile-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="2" width="16" height="24" rx="3" stroke="currentColor" stroke-width="1" fill="none"/>
+          <circle cx="14" cy="21" r="1.5" fill="currentColor" opacity=".5"/>
+          <circle cx="11" cy="10" r="2.5" stroke="currentColor" stroke-width="1" fill="none" opacity=".6"/>
+          <path d="M16 8.5c1 .5 1.5 1.5 1.5 2.5s-.5 2-1.5 2.5" stroke="#8b6f9e" stroke-width="1" stroke-linecap="round"/>
+          <path d="M8 15.5c0-1.5 2-2.5 3-2.5s3 1 3 2.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="mobile-platform">Android APK</div>
+      <h3 class="mobile-name">Pet Monitor & Care</h3>
+      <p class="mobile-desc">Comprehensive pet care app — track your pet's health records, schedule vet appointments, set feeding reminders, and monitor their daily wellness.</p>
+      <div class="project-tags" style="margin-bottom:1.5rem;">
+        <span class="tag featured">Pet Care</span>
+        <span class="tag">Android</span>
+        <span class="tag">Health</span>
+        <span class="tag">Monitoring</span>
+      </div>
+      <a href="https://drive.google.com/file/d/1j8-ajKok69nni9m6JruVCRziBbaSHj87/view?usp=drive_link" target="_blank" class="apk-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download APK
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<div class="stats-section reveal">
+  <div class="stat-item">
+    <span class="stat-num" id="s1">0<em>+</em></span>
+    <span class="stat-label">Projects shipped</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="s2">0<em></em></span>
+    <span class="stat-label">Web deployments</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="s3">0<em></em></span>
+    <span class="stat-label">Android APKs</span>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-left">My <em>Portfolio</em> — Developer</div>
+  <div class="footer-links">
+    <a href="https://website2-tau-jade.vercel.app/" target="_blank">Home</a>
+    <a href="https://citiconnect2-0.vercel.app/" target="_blank">CitiConnect</a>
+    <a href="https://gentry-royale-hotel-pos.vercel.app/" target="_blank">Hotel POS</a>
+    <a href="https://sorting-algorithm-tau.vercel.app/" target="_blank">Sorting</a>
+    <a href="https://game-jump-ball-bice.vercel.app/" target="_blank">Game</a>
+  </div>
+  <div class="footer-copy">© 2025</div>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+(function ani(){ cursor.style.left=mx+'px'; cursor.style.top=my+'px'; rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(ani); })();
+document.querySelectorAll('a,.project-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ cursor.style.width='14px'; cursor.style.height='14px'; ring.style.width='50px'; ring.style.height='50px'; ring.style.borderColor='rgba(200,169,110,0.7)'; });
+  el.addEventListener('mouseleave',()=>{ cursor.style.width='8px'; cursor.style.height='8px'; ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(200,169,110,0.4)'; });
+});
+
+const lc = document.getElementById('heroLines');
+[{left:'20%',top:0,width:'1px',height:'100%',delay:0.5},{left:'55%',top:0,width:'1px',height:'60%',delay:0.8},{top:'35%',left:0,width:'100%',height:'1px',delay:0.6},{top:'70%',left:'20%',width:'80%',height:'1px',delay:0.9}].forEach(d=>{
+  const l=document.createElement('div'); l.className='hero-line';
+  Object.assign(l.style,{position:'absolute',background:'rgba(232,226,217,0.04)',animationDelay:d.delay+'s',...d}); lc.appendChild(l);
+});
+
+const items = ['JavaScript','HTML','CSS','Vercel','Algorithms','Canvas API','Physics','Portal','POS System','E-Commerce','Civic Tech','Game Dev'];
+const track = document.getElementById('marqueeTrack');
+const markup = items.map(i=>'<span class="marquee-item">'+i+'<span>◆</span></span>').join('');
+track.innerHTML = markup+markup;
+
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+setInterval(()=>{
+  const n=new Date(), p=v=>String(v).padStart(2,'0');
+  const el=document.getElementById('clock-display');
+  if(el) el.textContent=p(n.getHours())+':'+p(n.getMinutes())+':'+p(n.getSeconds());
+},1000);
+
+function countUp(id, target, suffix){
+  const el=document.getElementById(id); if(!el) return;
+  let start=null;
+  (function step(ts){
+    if(!start) start=ts;
+    const p=Math.min((ts-start)/2000,1);
+    const v=Math.floor((1-Math.pow(1-p,3))*target);
+    el.innerHTML=v+'<em>'+suffix+'</em>';
+    if(p<1) requestAnimationFrame(step);
+  })(0);
+}
+
+const statObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){
+    countUp('s1',8,'+');
+    countUp('s2',6,'');
+    countUp('s3',3,'');
+    statObs.disconnect();
+  }
+},{threshold:0.3});
+const ss=document.querySelector('.stats-section');
+if(ss) statObs.observe(ss);
+</script>
+</body>
+</html>
