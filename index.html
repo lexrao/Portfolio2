@@ -541,6 +541,42 @@ footer { border-top: 1px solid var(--border); padding: 3rem 3.5rem; display: fle
       </div>
     </div>
 
+    <div class="project-item reveal" style="transition-delay:.7s">
+      <div class="project-num">08</div>
+      <div class="project-body">
+        <h3 class="project-name">Encrypt & Decrypt Generator</h3>
+        <p class="project-desc">A browser-based encryption tool that lets users encode and decode text using various cipher methods — clean UI, instant results, no backend required.</p>
+        <div class="project-tags">
+          <span class="tag featured">Security Tool</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Cryptography</span>
+          <span class="tag">Web App</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <a href="https://encrypt-decrypt-generator.vercel.app/" target="_blank" class="project-link">View live <span class="arrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="project-item reveal" style="transition-delay:.8s">
+      <div class="project-num">09</div>
+      <div class="project-body">
+        <h3 class="project-name">Regenerator</h3>
+        <p class="project-desc">A single-file HTML/CSS/JS web application — compact, self-contained, and fully functional with no dependencies or build tools required.</p>
+        <div class="project-tags">
+          <span class="tag featured">Single File</span>
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <a href="https://regenerating.vercel.app/" target="_blank" class="project-link">View live <span class="arrow">↗</span></a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -850,7 +886,7 @@ function countUp(id, target, suffix){
 
 const statObs=new IntersectionObserver(entries=>{
   if(entries[0].isIntersecting){
-    countUp('s1',10,'+');
+    countUp('s1',12,'+');
     countUp('s2',6,'');
     countUp('s3',3,'');
     statObs.disconnect();
